@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airbnb - Find Vacation Rentals & Apartments</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;1,100&family=Mate:ital@0;1&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=PT+Sans+Caption&display=swap" rel="stylesheet">
+<style>
+        /* Reset default styles */
+        body, h1, h2, h3, p, ul, li, form {
+            margin: 0;
+            padding: 0;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        body {
+            font-family: "Open Sans", sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: rgb(231, 231, 226);
+            padding: 20px 0;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: x-large;
+        }
+
+        header img {
+            margin-left: 20px;
+            height: 40px;
+        }
+
+        nav {
+            margin-right: 20px;
+            background-color: rgb(231, 231, 226);
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            color: #676767
+        }
+
+        nav a {
+            margin-left: 20px;
+            color: #676767;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        main {
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section {
+            background-color: #ffffff;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            padding: 20px;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        footer {
+background-color: rgb(231, 231, 226);
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+            bottom: 0;
+            width: 100%;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        footer p {
+            font-size: 14px;
+        }
+
+
+        #search-input {
+            width: 87%;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            margin-right: 1em;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        .search-button {
+            background-color: rgb(255, 56, 92);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #search-form {
+            background-color: #f4f4f4;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #search-form h2 {
+            color: rgb(255, 56, 92);
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+
+        label {
+            font-weight: bold;
+            color: #484848;
+            font-size: 14px;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: rgb(255, 56, 92);
+            font-family: "Open Sans", sans-serif;
+        }
+
+        #submit-search {
+            background-color: rgb(255, 56, 92);
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            font-family: "Open Sans", sans-serif;
+        }
+
+        button:hover {
+            background-color: rgb(255, 56, 92);
+        }
+
+        #listings {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-gap: 20px;
+        }
+
+        #listings img {
+            height: 18em;
+            width: 17em;
+            border-radius: 20px;
+        }
+
+        #recommendations h2 {
+            color: rgb(255, 56, 92);
+            border-radius: 8px;
+        }
+        .new{
+            color: #636363;
+            font-size: small;
+        }
+ /* Style the tab */
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    border-radius: 8px 8px 0px 0px;
+    margin-bottom: 15px;
+
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center;
+    gap: 7px;
+    font-family: "Open Sans", sans-serif;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #c0c0c0;
+    color: rgb(255, 56, 92); /* Set active text color */
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+#top_neighbourhoods img{
+    height: 18em;
+    width: 17em;
+    border-radius: 20px;
+
+}
+#trending-listings{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+        }
+#trending img{
+    height: 18em;
+    width: 17em;
+    border-radius: 20px;
+}
+
+.neighborhood-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.neighborhood {
+    width: calc(33.33% - 20px); /* Adjust the width as needed */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.neighborhood-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.neighborhood-name {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+    </style>
+</head>
+<body>
+<header>
+    <img src="https://www.nasbs.org/wp-content/uploads/2020/07/logo-airbnb.png" alt="Airbnb Logo">
+    <nav>
+        <a href="#">Places to stay</a>
+        <a href="#">Experiences</a>
+        <a href="#">Online Experiences</a>
+    </nav>
+</header>
+
+<main>
+    <section id="search-form">
+        <h2>Explore Airbnb</h2>
+        <form id="recommendation-form" method="POST">
+            <div class="form-row">
+                <div class="form-group" style="flex-direction: row; align-items: center;">
+                    <input type="text" id="search-input" name="search_input" placeholder="Try 'New York'">
+                    <button class="search-button" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <br>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="neighbourhood_group">Neighborhood Group:</label>
+                    <select id="neighbourhood_group" name="neighbourhood_group">
+                        <option value="All Neighbourhoods">Select Neighbourhoods</option>
+                        {% for neighbourhood_group in neighbourhood_groups %}
+                            <option value="{{ neighbourhood_group }}">{{ neighbourhood_group }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="room-type">Room Type:</label>
+                    <select id="room-type" name="room_type">
+                        <option value="All Room Types">Select Room Types</option>
+                        {% for room_type in room_types %}
+                            <option value="{{ room_type }}">{{ room_type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price">Maximum Price ($):</label>
+                    <input type="number" id="price" name="price" min="0" placeholder="All prices">
+                </div>
+                <div class="form-group">
+                    <label for="minimum_nights">Minimum Nights:</label>
+                    <input type="number" id="minimum_nights" name="minimum_nights" min="1" placeholder="All minimum nights">
+                </div>
+            </div>
+            <br>
+            <div class="form-row">
+                <div class="form-group">
+                    <button id="submit-search" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+    <section id="recommendations">
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'featured')">
+                <i class="fas fa-home"></i> Featured Listings
+            </button>
+            <button class="tablinks" onclick="openTab(event, 'trending')">
+                <i class="fas fa-fire"></i> Trending
+            </button>
+            <button class="tablinks" onclick="openTab(event, 'top_neighbourhoods')">
+                <i class="fas fa-map-marked-alt"></i> Top Neighborhoods
+            </button>
+            <!-- Add more buttons for other tabs if needed -->
+        </div>
+
+        <!-- Tab content for Featured Listings -->
+        <div id="featured" class="tabcontent" style="display: block;">
+            <div id="listings">
+                {% if recommendations %}
+                    {% for rec in recommendations %}
+                        <div class="listing">
+                            <img src="{{ rec.imagefor_name }}" alt="{{ rec.name }}">
+                            <p><strong> {{ rec.name }}</strong></p>
+                            <p class="new"> {{ rec.neighbourhood_group }},{{ rec.neighbourhood }}, {{ rec.room_type }}, ${{ rec.price }} per night </p>
+                            <p class="new">Availability: {{ rec.availability_365 }}, Minimum Nights: {{ rec.minimum_nights }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No recommendations available for the selected room type and neighborhood group.</p>
+                {% endif %}
+            </div>
+        </div>
+
+<!-- Tab content for Trending -->
+<div id="trending" class="tabcontent">
+    <div id="trending-listings">
+        {% if trending_recommendations %}
+            {% for rec in trending_recommendations %}
+                <div class="listing">
+                    <img src="{{ rec.imagefor_name }}" alt="{{ rec.name }}">
+                    <p><strong>{{ rec.name }}</strong></p>
+                    <p>{{ rec.neighbourhood_group }},{{ rec.neighbourhood_group }}, {{ rec.room_type }}, ${{ rec.price }} per night</p>
+                    <p>Availability: {{ rec.availability_365 }}, Minimum Nights: {{ rec.minimum_nights }}</p>
+                    <p>Number of Reviews: {{ rec.number_of_reviews }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No trending listings available.</p>
+        {% endif %}
+    </div>
+</div>
+        <!-- Tab content for Top Neighborhoods -->
+<div id="top_neighbourhoods" class="tabcontent">
+    <div id="top-neighbourhoods-listings" class="neighborhood-container">
+        <!-- Add content for top neighborhoods here -->
+        {% for neighborhood in top_neighborhoods %}
+            <div class="neighborhood" id="top_n">
+                <img src="{{ neighborhood[1] }}" alt="{{ neighborhood[0] }}" class="neighborhood-image">
+                <p class="neighborhood-name">{{ neighborhood[0] }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+        </div>
+        <!-- Add more tab content divs for other tabs if needed -->
+    </section>
+
+
+
+</main>
+
+<footer>
+    <p>&copy; 2024 Airbnb, Inc.</p>
+</footer>
+
+<script>function openTab(evt, tabName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+</body>
+</html>
